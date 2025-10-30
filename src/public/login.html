@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Portal de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="logo">
+                    <span>Portal Productos Práctica 1</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/products">Productos</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div class="form-container">
+                <h2>Iniciar Sesión</h2>
+                <div id="errorMessage" class="error hidden"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña:</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+ <script>
+// Función de diagnóstico mejorada
+async function debugLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+    
+    console.log('🔍 DIAGNÓSTICO LOGIN:');
+    console.log('📧 Email:', email);
+    console.log('🔑 Password:', password ? '***' : 'vacío');
+    
+    try {
+        console.log('🔄 Enviando solicitud a /api/auth/login...');
+        
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+        
+        console.log('📡 Respuesta del servidor:');
+        console.log('✅ Status:', response.status);
+        console.log('📋 Headers:', response.headers);
+        
+        const data = await response.json();
+        console.log('📦 Datos recibidos:', data);
+        
+        if (response.ok) {
+            console.log('🎉 Login exitoso!');
+            console.log('🔐 Token recibido:', data.token ? 'SÍ' : 'NO');
+            console.log('👤 Usuario:', data.user);
+            
+            if (data.token) {
+                sessionStorage.setItem('token', data.token);
+                console.log('💾 Token guardado en sessionStorage');
+                window.location.href = '/products';
+            } else {
+                console.error('❌ NO se recibió token en la respuesta');
+                errorMessage.textContent = 'Error: No se recibió token del servidor';
+                errorMessage.classList.remove('hidden');
+            }
+        } else {
+            console.error('❌ Error en login:', data.message);
+            errorMessage.textContent = data.message;
+            errorMessage.classList.remove('hidden');
+        }
+        
+    } catch (error) {
+        console.error('💥 Error de conexión:', error);
+        errorMessage.textContent = 'Error de conexión con el servidor';
+        errorMessage.classList.remove('hidden');
+    }
+}
+
+// Reemplaza el event listener actual temporalmente para debugging
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await debugLogin();
+});
+
+// Redirigir si ya está autenticado
+const token = sessionStorage.getItem('token');
+if (token) {
+    window.location.href = '/products';
+}
+</script>
+</body>
+</html>

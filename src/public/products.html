@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Portal de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="logo">
+                    <span>Portal Productos Práctica 1</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/products" class="active">Productos</a></li>
+                    <li><a href="/chat">Chat</a></li>
+                </ul>
+                <div class="user-section">
+                    <span id="userWelcome">Bienvenido</span>
+                    <button class="btn btn-danger hidden" id="logoutBtn">Cerrar Sesión</button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div id="authMessage" class="error hidden">
+                <h2>Acceso Requerido</h2>
+                <p>Debes iniciar sesión para ver los productos.</p>
+                <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+                <a href="/register" class="btn btn-outline">Registrarse</a>
+            </div>
+
+            <div id="productsSection" class="hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Gestión de Productos</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-actions">
+                            <button class="btn btn-success hidden" id="addProductBtn">➕ Agregar Producto</button>
+                        </div>
+
+                        <!-- Modal para agregar/editar producto -->
+                        <div id="productModal" class="modal hidden">
+                            <div class="modal-content">
+                                <h2 id="modalTitle">Agregar Producto</h2>
+                                <form id="productForm">
+                                    <div class="form-group">
+                                        <label for="productName" class="form-label">Nombre:</label>
+                                        <input type="text" id="productName" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productDescription" class="form-label">Descripción:</label>
+                                        <textarea id="productDescription" class="form-input" required rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productPrice" class="form-label">Precio:</label>
+                                        <input type="number" id="productPrice" class="form-input" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productCategory" class="form-label">Categoría:</label>
+                                        <input type="text" id="productCategory" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productStock" class="form-label">Stock:</label>
+                                        <input type="number" id="productStock" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productImage" class="form-label">URL de la imagen:</label>
+                                        <input type="url" id="productImage" class="form-input">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                        <button type="button" class="btn btn-danger" id="cancelBtn">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="productsGrid" class="products-grid">
+                            <!-- Los productos se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let editingProductId = null;
+
+        // Elementos del DOM
+        const authMessage = document.getElementById('authMessage');
+        const productsSection = document.getElementById('productsSection');
+        const productsGrid = document.getElementById('productsGrid');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const productModal = document.getElementById('productModal');
+        const productForm = document.getElementById('productForm');
+        const userWelcome = document.getElementById('userWelcome');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Verificar autenticación
+        async function checkAuth() {
+            const token = sessionStorage.getItem('token');
+
+            if (!token) {
+                authMessage.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/verify', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    userWelcome.textContent = `Hola, ${currentUser.username} (${currentUser.role})`;
+                    
+                    authMessage.classList.add('hidden');
+                    productsSection.classList.remove('hidden');
+                    
+                    if (currentUser.role === 'admin') {
+                        addProductBtn.classList.remove('hidden');
+                    }
+                    
+                    loadProducts();
+                } else {
+                    sessionStorage.removeItem('token');
+                    authMessage.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error verificando autenticación:', error);
+                sessionStorage.removeItem('token');
+                authMessage.classList.remove('hidden');
+            }
+        }
+
+        // Cargar productos
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                
+                if (data.success) {
+                    productsGrid.innerHTML = '';
+                    
+                    data.products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        
+                        productCard.innerHTML = `
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : '<div class="product-image">📦</div>'}
+                            <div class="product-content">
+                                <h3 class="product-title">${product.name}</h3>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-price">$${product.price}</div>
+                                <div class="product-meta">
+                                    <span><strong>Categoría:</strong> ${product.category}</span>
+                                    <span><strong>Stock:</strong> ${product.stock}</span>
+                                </div>
+                                ${currentUser.role === 'admin' ? `
+                                    <div class="product-actions">
+                                        <button class="btn btn-sm" onclick="editProduct('${product._id}')">Editar</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Eliminar</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                        
+                        productsGrid.appendChild(productCard);
+                    });
+                }
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+            }
+        }
+
+        // Agregar producto
+        addProductBtn.addEventListener('click', () => {
+            editingProductId = null;
+            document.getElementById('modalTitle').textContent = 'Agregar Producto';
+            productForm.reset();
+            productModal.classList.remove('hidden');
+        });
+
+        // Enviar formulario de producto
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value),
+                image: document.getElementById('productImage').value
+            };
+
+            const token = sessionStorage.getItem('token');
+            
+            try {
+                const url = editingProductId ? `/api/products/${editingProductId}` : '/api/products';
+                const method = editingProductId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.ok) {
+                    productModal.classList.add('hidden');
+                    loadProducts();
+                } else {
+                    alert('Error al guardar el producto');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar el producto');
+            }
+        });
+
+        // Editar producto
+        window.editProduct = async (productId) => {
+            try {
+                const response = await fetch(`/api/products/${productId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const product = data.product;
+                    editingProductId = productId;
+                    document.getElementById('modalTitle').textContent = 'Editar Producto';
+                    document.getElementById('productName').value = product.name;
+                    document.getElementById('productDescription').value = product.description;
+                    document.getElementById('productPrice').value = product.price;
+                    document.getElementById('productCategory').value = product.category;
+                    document.getElementById('productStock').value = product.stock;
+                    document.getElementById('productImage').value = product.image || '';
+                    
+                    productModal.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error cargando producto:', error);
+            }
+        };
+
+        // Eliminar producto
+        window.deleteProduct = async (productId) => {
+            if (!confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+                return;
+            }
+
+            const token = sessionStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    loadProducts();
+                } else {
+                    alert('Error al eliminar el producto');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el producto');
+            }
+        };
+
+        // Cancelar modal
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            productModal.classList.add('hidden');
+        });
+
+        // Cerrar sesión
+        function logout() {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('current_session');
+            window.location.href = '/';
+        }
+
+        logoutBtn.addEventListener('click', logout);
+
+        // Inicializar
+        checkAuth();
+    </script>
+</body>
+</html>

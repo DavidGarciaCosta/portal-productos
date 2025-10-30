@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="logo">
+                    <span>Portal Productos Práctica 1</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/" class="active">Inicio</a></li>
+                    <li><a href="/products">Productos</a></li>
+                    <li><a href="/chat">Chat</a></li>
+                </ul>
+                <div class="user-section">
+                    <span id="userWelcome">Bienvenido</span>
+                    <a href="/login" class="btn" id="loginBtn">Iniciar Sesión</a>
+                    <a href="/register" class="btn" id="registerBtn">Registrarse</a>
+                    <button class="btn btn-danger hidden" id="logoutBtn">Cerrar Sesión</button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <h1 class="hero-title">Portal de Productos de David</h1>
+                <p class="hero-subtitle">Aquí hay productos y un chat</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>Gestión de Productos</h3>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>Chat en Tiempo Real</h3>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Autenticación Segura</h3>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Verificar estado de autenticación
+        async function checkAuth() {
+            const token = sessionStorage.getItem('token');
+            const userWelcome = document.getElementById('userWelcome');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (token) {
+                try {
+                    const response = await fetch('/api/auth/verify', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        userWelcome.textContent = `Hola, ${data.user.username} (${data.user.role})`;
+                        loginBtn.classList.add('hidden');
+                        registerBtn.classList.add('hidden');
+                        logoutBtn.classList.remove('hidden');
+                    } else {
+                        sessionStorage.removeItem('token');
+                    }
+                } catch (error) {
+                    console.error('Error verificando autenticación:', error);
+                    sessionStorage.removeItem('token');
+                }
+            }
+
+            // Cerrar sesión
+            function logout() {
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('current_session');
+                window.location.href = '/';
+            }
+
+            logoutBtn.addEventListener('click', logout);
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
