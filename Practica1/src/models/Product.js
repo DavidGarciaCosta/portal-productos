@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Índices para búsquedas eficientes
+// Índices para búsquedas
 productSchema.index({ name: 'text', description: 'text' });
 productSchema.index({ category: 1 });
 productSchema.index({ price: 1 });

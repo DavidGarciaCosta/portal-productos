@@ -1,5 +1,3 @@
-// Funciones auxiliares para el cliente
-
 // Verificar autenticación
 export async function checkAuth() {
     const token = localStorage.getItem('token');

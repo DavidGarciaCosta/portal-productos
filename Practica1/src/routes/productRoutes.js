@@ -4,7 +4,7 @@ import { authenticateJWT, requireAdmin } from '../middleware/authenticateJWT.js'
 
 const router = express.Router();
 
-// Obtener todos los productos (público)
+// Obtener todos los productos
 router.get('/', async (req, res) => {
     try {
         const { category, search, page = 1, limit = 10 } = req.query;
@@ -171,25 +171,21 @@ router.put('/:id', authenticateJWT, requireAdmin, async (req, res) => {
     }
 });
 
-// Eliminar producto (solo admin)
+// Eliminar producto (solo admin) - ELIMINACIÓN REAL
 router.delete('/:id', authenticateJWT, requireAdmin, async (req, res) => {
     try {
-        const product = await Product.findByIdAndUpdate(
-            req.params.id,
-            { isActive: false },
-            { new: true }
-        );
+        const product = await Product.findByIdAndDelete(req.params.id);
 
         if (!product) {
+            console.log('Producto no encontrado para eliminar');
             return res.status(404).json({
                 success: false,
                 message: 'Producto no encontrado'
             });
-        }
-
+        }        
         res.json({
             success: true,
-            message: 'Producto eliminado exitosamente'
+            message: 'Producto eliminado permanentemente de la base de datos'
         });
     } catch (error) {
         console.error('Error al eliminar producto:', error);

@@ -51,13 +51,8 @@ async function debugLogin() {
     const password = document.getElementById('password').value;
     const errorMessage = document.getElementById('errorMessage');
     
-    console.log('🔍 DIAGNÓSTICO LOGIN:');
-    console.log('📧 Email:', email);
-    console.log('🔑 Password:', password ? '***' : 'vacío');
     
     try {
-        console.log('🔄 Enviando solicitud a /api/auth/login...');
-        
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -66,21 +61,18 @@ async function debugLogin() {
             body: JSON.stringify({ email, password })
         });
         
-        console.log('📡 Respuesta del servidor:');
-        console.log('✅ Status:', response.status);
-        console.log('📋 Headers:', response.headers);
         
         const data = await response.json();
-        console.log('📦 Datos recibidos:', data);
+
         
         if (response.ok) {
-            console.log('🎉 Login exitoso!');
-            console.log('🔐 Token recibido:', data.token ? 'SÍ' : 'NO');
-            console.log('👤 Usuario:', data.user);
+            console.log('Login exitoso!');
+            console.log('Token recibido:', data.token ? 'SÍ' : 'NO');
+            console.log('Usuario:', data.user);
             
             if (data.token) {
                 sessionStorage.setItem('token', data.token);
-                console.log('💾 Token guardado en sessionStorage');
+
                 window.location.href = '/products';
             } else {
                 console.error('❌ NO se recibió token en la respuesta');
@@ -94,7 +86,7 @@ async function debugLogin() {
         }
         
     } catch (error) {
-        console.error('💥 Error de conexión:', error);
+        console.error('❌ Error de conexión:', error);
         errorMessage.textContent = 'Error de conexión con el servidor';
         errorMessage.classList.remove('hidden');
     }

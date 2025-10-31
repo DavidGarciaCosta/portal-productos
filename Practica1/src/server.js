@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
-// Ruta para obtener mensajes del chat - CORREGIDA
+// Ruta para obtener mensajes del chat
 app.get('/api/chat/messages', authenticateJWT, async (req, res) => {
     try {
         const messages = await Message.find()
@@ -44,7 +44,6 @@ app.get('/api/chat/messages', authenticateJWT, async (req, res) => {
             .limit(100);
         
         const formattedMessages = messages.reverse().map(msg => {
-            // Manejar caso donde el usuario fue eliminado
             if (!msg.userId) {
                 return {
                     id: msg._id,
@@ -188,8 +187,7 @@ const connectedUsers = new Map();
 
 // Manejar conexiones de Socket.IO
     io.on('connection', async (socket) => {
-    console.log(`✅ Usuario conectado: ${socket.username} (ID: ${socket.userId})`);
-    
+
     try {
         // Verificar que el usuario no esté ya conectado desde otra pestaña
         const existingConnection = connectedUsers.get(socket.userId);
@@ -222,7 +220,7 @@ const connectedUsers = new Map();
         io.emit('user count', onlineUsers.length);
         io.emit('users update', onlineUsers);
 
-        // Enviar historial de mensajes al nuevo usuario - CORREGIDO
+        // Enviar historial de mensajes al nuevo usuario 
         try {
             const messages = await Message.find()
                 .populate('userId', 'username role')
@@ -230,7 +228,6 @@ const connectedUsers = new Map();
                 .limit(100);
             
             const formattedMessages = messages.reverse().map(msg => {
-                // Manejar caso donde el usuario fue eliminado
                 if (!msg.userId) {
                     return {
                         id: msg._id,
@@ -263,7 +260,7 @@ const connectedUsers = new Map();
             console.error('Error cargando mensajes anteriores:', error);
         }
 
-        // Notificar que un usuario se conectó
+        // Notificar que usuario se conectó
         io.emit('chat message', {
             user: 'Sistema',
             text: `🟢 ${socket.username} se ha conectado`,
@@ -364,7 +361,7 @@ const connectedUsers = new Map();
     }
 });
 
-// Limpiar sesiones inactivas cada 5 minutos
+// Limpiar sesiones inactivas
 setInterval(async () => {
     try {
         const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
@@ -403,16 +400,15 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Para cualquier otra ruta, servir el index.html (SPA)
+// Para cualquier otra ruta, servir el index.html
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Conectar a MongoDB y iniciar servidor
+// Conectar a MongoDB e iniciar servidor
 async function startServer() {
     try {
         await mongoose.connect(MONGODB_URI);
-        console.log('✅ Conectado a MongoDB');
         
         // Crear usuario admin por defecto si no existe
         await createDefaultAdmin();
@@ -426,7 +422,7 @@ async function startServer() {
     }
 }
 
-// Crear usuario admin por defecto
+// Crear usuario admin 
 async function createDefaultAdmin() {
     try {
         const adminExists = await User.findOne({ role: 'admin' });
@@ -440,7 +436,7 @@ async function createDefaultAdmin() {
             });
             
             await adminUser.save();
-            console.log('👤 Usuario admin creado por defecto');
+            console.log('👤 Usuario admin creado');
         } else {
             console.log('👤 Usuario admin ya existe');
         }
@@ -449,7 +445,7 @@ async function createDefaultAdmin() {
     }
 }
 
-// Manejo graceful de cierre
+// Manejo de cierre
 process.on('SIGINT', async () => {
     console.log('\n Cerrando servidor...');
     

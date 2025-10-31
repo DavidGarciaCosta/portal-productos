@@ -40,7 +40,6 @@ body {
     min-height: 100vh;
 }
 
-/* Layout principal mejorado */
 .app-container {
     min-height: 100vh;
     display: flex;
@@ -164,7 +163,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* Botones profesionales */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -247,7 +245,7 @@ body {
     font-size: 0.75rem;
 }
 
-/* Contenedor principal */
+
 .main-content {
     flex: 1;
     padding: 2rem;
@@ -256,7 +254,6 @@ body {
     width: 100%;
 }
 
-/* Hero Section - Diseño Profesional */
 .hero-section {
     background: var(--gradient-secondary);
     padding: 4rem 2rem;
@@ -304,7 +301,6 @@ body {
     margin-right: auto;
 }
 
-/* Features Grid - Moderno */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -361,7 +357,6 @@ body {
     line-height: 1.6;
 }
 
-/* Tarjetas modernas */
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border-primary);
@@ -398,7 +393,6 @@ body {
     padding: 2rem;
 }
 
-/* Grid de productos profesional */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -487,7 +481,7 @@ body {
     margin-top: 1rem;
 }
 
-/* Formularios profesionales */
+
 .form-container {
     max-width: 500px;
     margin: 2rem auto;
@@ -548,7 +542,6 @@ body {
     margin-top: 2rem;
 }
 
-/* Modal profesional */
 .modal {
     position: fixed;
     top: 0;
@@ -586,7 +579,6 @@ body {
     background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
 }
 
-/* Estados y utilidades */
 .hidden {
     display: none !important;
 }
@@ -621,7 +613,6 @@ body {
     border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-/* Loading spinner */
 .spinner {
     width: 40px;
     height: 40px;
@@ -637,7 +628,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Scrollbar personalizado */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -655,7 +645,6 @@ body {
     background: var(--border-secondary);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
     .navbar {
         padding: 1rem;
@@ -716,7 +705,6 @@ body {
     }
 }
 
-/* Efectos de partículas para fondo (opcional) */
 .particles {
     position: fixed;
     top: 0;

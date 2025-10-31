@@ -24,7 +24,7 @@ const messageSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Índices para consultas eficientes
+// Índices para consultas
 messageSchema.index({ room: 1, createdAt: -1 });
 messageSchema.index({ userId: 1 });
 messageSchema.index({ createdAt: -1 });

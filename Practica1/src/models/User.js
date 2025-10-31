@@ -44,19 +44,19 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Middleware para hashear la contraseña antes de guardar
+// Para hashear la contraseña antes de guardar
 userSchema.pre('save', async function(next) {
-    console.log('🔑 Middleware pre-save ejecutándose...');
+    console.log('Middleware pre-save ejecutándose...');
     if (!this.isModified('password')) {
-        console.log('🔑 Password no modificado, saltando hash');
+        console.log('Password no modificado, saltando hash');
         return next();
     }
     
     try {
-        console.log('🔑 Hasheando password...');
+        console.log('Hasheando password...');
         const salt = await bcrypt.genSalt(12);
         this.password = await bcrypt.hash(this.password, salt);
-        console.log('🔑 Password hasheado exitosamente');
+        console.log('Password hasheado exitosamente');
         next();
     } catch (error) {
         console.error('❌ Error hasheando password:', error);

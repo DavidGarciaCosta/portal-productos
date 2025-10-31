@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { JWT_SECRET } from '../config.js';
 
-/**
- * Middleware para autenticación JWT
- */
+
+ //Middleware para autenticación JWT
+
 export const authenticateJWT = async (req, res, next) => {
     try {
         console.log('MIDDLEWARE JWT - Headers recibidos:', req.headers);
@@ -87,9 +87,9 @@ export const authenticateJWT = async (req, res, next) => {
     }
 };
 
-/**
- * Middleware para requerir rol de administrador
- */
+
+ //Middleware para requerir rol de administrador
+
 export const requireAdmin = (req, res, next) => {
     if (!req.user) {
         return res.status(401).json({
