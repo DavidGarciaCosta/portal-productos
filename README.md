@@ -1,8 +1,7 @@
 # Portal de Productos David - Práctica 1
 
 ## Decisiones tomadas durante el desarrollo de mi app
-En esta práctica he decidido seguir una arquitectura de aplicación con clara separación entre frontend  y backend, 
-porque consideré que simplificaría el desarrollo y mantenimiento mientras mantenía la escalabilidad necesaria. 
+En esta práctica he decidido seguir una arquitectura de aplicación con clara separación entre frontend  y backend. 
 Organicé el código en modelos, rutas, middleware y frontend porque es necesaria la separación de responsabilidades 
 para mejorar la mantenibilidad y comprensión del proyecto y porque tambié se pedía así.
 
@@ -107,20 +106,22 @@ Aplicación web para la Práctica_1 que integra un sistema completo de portal de
 ### Pasos de Instalación y Manejo
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clonar el repositorio o descargar zip
 github -> DavidGarciaCosta
 Entrar -> portal-productos
-git clone [URL_DEL_REPOSITORIO]
-cd portal-productos
+git clone [URL_DEL_REPOSITORIO] o descargar zip
 
 # 2.Instalar dependencias
 npm install
 
 # 3. Ejecutar la aplicación
-Al clonar tienes que hacer cd hasta llegar a /src y ahi hay que poner nmp server.js o npm start
+Al clonar o descargar el zip tienes que hacer cd Practica1/ cd src (hasta llegar a /src) y ahi hay que poner nmp server.js o npm start.
+
 
 # 4. Abrir en el navegador y manejo
 # http://localhost:3000
 Ahi podrás registrarte como usuario o como admin, una vez registrado podrás iniciar sesión.
 Entrarás al portal de productos o al chat, con admin tendras privelegios(CRUD) en productos y
 con usuario normal solo podras verlo, los 2 podrán hablar en el chat y además se guardarán los mensajes.
+
+NOTA: Si da algún error, instalar node, mongoose, cors, path, ( npm install express mongoose cors path ) aunque con el npm install ya debería dejar.
