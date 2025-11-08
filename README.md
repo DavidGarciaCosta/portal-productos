@@ -1,31 +1,39 @@
 # Portal de Productos David - Práctica 1
 
 ## Decisiones tomadas durante el desarrollo de mi app
+### ARQUITECTURA
 En esta práctica he decidido seguir una arquitectura de aplicación con clara separación entre frontend  y backend. 
 Organicé el código en modelos, rutas, middleware y frontend porque es necesaria la separación de responsabilidades 
 para mejorar la mantenibilidad y comprensión del proyecto y porque tambié se pedía así.
 
+### JWT
 Para la autenticación implementé JWT, me costó un poco ya que no lo conseguía poner ni tampoco ver en google, 
 hasta que pude conseguirlo y también pude ver el token con F12 cuando inicio sesión con un usuario o admin. 
 
+### BD
 Como he visto durante la universidad y como era un requisito elegí MongoDB, 
 me resulta bastante fácil su uso y el hecho de hacer los esquemas. 
 
+### CHAT Y SOCKET.IO
 Para el chat en tiempo real, he utilizado Socket.IO como hemos visto en las anteriores clases, 
 y ya que tenía una base hecha en clase la he utilizado en esta práctica y me ha sido muy útil.
 Para guardar los mensajes simplemente era crear un esquema para que se guarde en la base de datos.
 
+### PROBLEMAS RESUELTOS, APRENDIZAJE Y ALMACENAMIENTO
 He de decir que el chat me costó un poco tener en cada localhost distintos usuarios para autenticarse 
 y poder hablar con los 2 ya que a pesar de tener la practica y que fuera útil lo quise hacer por mi cuenta, lo logré 
 y simplemente era cambiar el localStorage por sessionStorage para guardarlo ahi y que no se reescriba cada vez que 
 refresco la página.
 
+### CRUD
 Los endpoints para cada cosa son simples y me resulto sencillo ya que eran cosas que ya hice en otro proyecto 
 de la universidad, por lo tanto hacer el CRUD para los productos fue sencillo(cabe resaltar que si coges la URL de 
 una imágen en Google se añade).
 
+### ESTILOS
 Diseñé la app utilizando CSS y creo que visualmente es atractiva. Opté por un diseño oscuro para reducir la fatiga visual.
 
+### AYUDA
 Básicamente en las cosas que no lograba hacer bien me ayudaba de la IA y trataba de entenderlo y de que funcionara correctamente.
 
 ## Estructura del proyecto
