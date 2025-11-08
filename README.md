@@ -101,7 +101,6 @@ Aplicación web para la Práctica_1 que integra un sistema completo de portal de
 - **Sistema de registro y login** con JWT (JSON Web Tokens)
 - **Roles de usuario**: Administrador y Usuario normal
 - **Protección de rutas** con middleware de autenticación
-- **Hash de contraseñas** con bcryptjs
 
 ### 🛍️ Gestión de Productos
 - **CRUD completo** para administradores (Crear, Leer, Actualizar, Eliminar)
