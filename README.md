@@ -122,7 +122,7 @@ Aplicación web para la Práctica_1 que integra un sistema completo de portal de
 | **Backend** | Node.js, Express.js |
 | **Base de Datos** | MongoDB con Mongoose |
 | **Tiempo Real** | Socket.IO |
-| **Autenticación** | JWT (JSON Web Tokens), bcryptjs |
+| **Autenticación** | JWT |
 | **Seguridad** | Helmet, CORS, Express Rate Limit |
 
   
