@@ -87,14 +87,44 @@ server.js            # Servidor principal con Socket.IO
 
 Aplicación web para la Práctica_1 que integra un sistema completo de portal de productos con autenticación JWT, gestión de productos con roles diferenciados y chat en tiempo real.
 
-## Características
+## ✨ Características Implementadas
 
-- 🔐 **Autenticación JWT** 
-- 🛒 **CRUD completo de productos** 
-- 💬 **Chat en tiempo real** c
-- 🗄️ **Persistencia en MongoDB** 
-- 🎨 **Interfaz moderna** 
-- 🔒 **Seguridad robusta** 
+### 🔐 Autenticación y Seguridad
+- **Sistema de registro y login** con JWT (JSON Web Tokens)
+- **Roles de usuario**: Administrador y Usuario normal
+- **Protección de rutas** con middleware de autenticación
+- **Hash de contraseñas** con bcryptjs
+
+### 🛍️ Gestión de Productos
+- **CRUD completo** para administradores (Crear, Leer, Actualizar, Eliminar)
+- **Visualización** de productos para usuarios registrados
+- **Filtros y búsqueda** por categoría y texto
+- **En MongoDB** con relaciones de usuario
+
+### 💬 Chat en Tiempo Real
+- **Comunicación instantánea** con Socket.IO
+- **Historial persistente** de mensajes en base de datos
+- **Indicador de escritura** ("usuario está escribiendo...")
+- **Lista de usuarios conectados** en tiempo real
+- **Badges de administrador** en los mensajes
+
+### 🎨 Interfaz de Usuario
+- **Diseño dark mode** moderno y responsive
+- **Navegación intuitiva** entre secciones
+- **Experiencia de usuario** optimizada
+- **Compatible con dispositivos móviles**
+
+## 🛠️ Tecnologías Utilizadas
+
+| Capa | Tecnologías |
+|------|-------------|
+| **Frontend** | HTML5, CSS3, JavaScript Vanilla |
+| **Backend** | Node.js, Express.js |
+| **Base de Datos** | MongoDB con Mongoose |
+| **Tiempo Real** | Socket.IO |
+| **Autenticación** | JWT (JSON Web Tokens), bcryptjs |
+| **Seguridad** | Helmet, CORS, Express Rate Limit |
+
   
 ## Instalación
 
