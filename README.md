@@ -162,5 +162,3 @@ Ahi podrás registrarte como usuario o como admin, una vez registrado podrás in
 Entrarás al portal de productos o al chat, con admin tendras privelegios(CRUD) en productos y
 con usuario normal solo podras verlo, los 2 podrán hablar en el chat y además se guardarán los mensajes.
 
-NOTA: Si da algún error, instalar node, mongoose, cors, path, 
-( npm install express mongoose cors path ) aunque con el npm install ya debería dejar.
