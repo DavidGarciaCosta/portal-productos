@@ -245,7 +245,6 @@ body {
     font-size: 0.75rem;
 }
 
-
 .main-content {
     flex: 1;
     padding: 2rem;
@@ -480,7 +479,6 @@ body {
     gap: 0.5rem;
     margin-top: 1rem;
 }
-
 
 .form-container {
     max-width: 500px;
@@ -731,5 +729,176 @@ body {
     }
     100% {
         transform: translateY(-100px) translateX(100px);
+    }
+}
+
+/* Estilos para el estado vacío */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+    grid-column: 1 / -1;
+}
+
+.empty-state h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+/* Mejoras para las tarjetas de productos existentes */
+.product-card {
+    transition: var(--transition);
+    border: 1px solid var(--border-primary);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-actions .btn {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Estilos para el formulario de productos */
+.product-form {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.product-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.product-form .form-divider {
+    border: none;
+    height: 1px;
+    background: var(--border-primary);
+    margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .product-form .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-form {
+        padding: 1.5rem;
+    }
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    color: white;
+    z-index: 1000;
+    max-width: 300px;
+    box-shadow: var(--shadow-lg);
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.success {
+    background: var(--accent-success);
+}
+
+.notification.error {
+    background: var(--accent-danger);
+}
+
+.notification.info {
+    background: var(--accent-primary);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Estilos adicionales para mejor UX */
+.form-input:invalid {
+    border-color: var(--accent-danger);
+}
+
+.form-input:valid {
+    border-color: var(--accent-success);
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus visible para mejor accesibilidad */
+.btn:focus-visible,
+.form-input:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+/* Estados de carga */
+.skeleton {
+    background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: var(--border-radius-sm);
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
     }
 }
